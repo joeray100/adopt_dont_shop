@@ -53,4 +53,18 @@ RSpec.describe 'Applications Show Page' do
 
     expect(page).to_not have_content(@application2.name)
   end
+
+  it "If app is still pending, I see an input to search for pets. I fill it in and click submit" do
+    expect(current_path).to eq(application_path(@application1))
+    expect(page).to have_field(:search)
+
+    fill_in 'Search', with: 'myrtle'
+
+    click_on 'Submit'
+
+    expect(current_path).to eq(application_path(@application1))
+    expect(page).to have_content(@pet3.name)
+    expect(page).to have_content(@pet3.age)
+    expect(page).to have_content(@pet3.breed)
+  end
 end
