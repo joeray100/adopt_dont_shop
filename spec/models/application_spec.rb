@@ -14,7 +14,7 @@ RSpec.describe Application, type: :model do
     it { should validate_presence_of(:zip) }
     it { should validate_numericality_of(:zip) }
     it { should validate_presence_of(:description) }
-    it { should define_enum_for(:status).with_values([:"in_progress", :"pending", :"approved", :"rejected"]).backed_by_column_of_type(:string) }
+    it { should define_enum_for(:status)}
   end
   #
   # before :each do
