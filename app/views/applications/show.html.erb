@@ -1,4 +1,4 @@
-<h2><%= @application.name %>'s Application'</h2><br/><br/>
+<h2><%= @application.name %>'s Application'</h2><br/>
 
 <ul>
   <li>Street Address - <%= @application.address %></li><br/>
@@ -9,5 +9,24 @@
   <li>Status - <%= @application.status %></li><br/>
 </ul>
 
-<%=  %>
-<%  %>
+<h3>Add a Pet to this Application</h3>
+<section>
+  <% if @application.status == "In Progress" %>
+    <%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
+      <%= f.label :search %>
+      <%= f.text_field :search %>
+
+      <%= f.submit 'Submit' %>
+    <% end %>
+  <% end %>
+</section><br/>
+
+<% if params[:search] %>
+  <% @pet_search.each do |pet| %>
+  <section>
+    <li>Name - <%= pet.name %></li><br/>
+    <li>Age - <%= pet.age %></li><br/>
+    <li>Breed - <%= pet.breed %></li><br/>
+  <% end %>
+</section>
+<% end %><br/><br/>
