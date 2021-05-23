@@ -6,4 +6,8 @@ class Application < ApplicationRecord
 
   validates :name, :address, :city, :state, :description, :status, presence: true
   validates :zip, presence: true, numericality: true
+
+  def adopted_pets(pet)
+    pets << pet
+  end
 end
