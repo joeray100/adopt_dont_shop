@@ -15,7 +15,6 @@
     <%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
       <%= f.label :search %>
       <%= f.text_field :search %>
-
       <%= f.submit 'Submit' %>
     <% end %>
   <% end %>
@@ -24,9 +23,22 @@
 <% if params[:search] %>
   <% @pet_search.each do |pet| %>
   <section>
+    <li>Name - <%= pet.name %> <%= button_to "Adopt this Pet", application_path(@application), method: :get, params: {adopt: pet} %></li><br/>
+    <li>Age - <%= pet.age %></li><br/>
+    <li>Breed - <%= pet.breed %></li><br/>
+    <li>Adoptable? - <%= pet.adoptable %></li><br/>
+  </section>
+  <% end %>
+<% end %><br/><br/>
+
+<% if params[:adopt] %>
+  <% @adopted_pets.each do |pet| %>
+  <section>
     <li>Name - <%= pet.name %></li><br/>
     <li>Age - <%= pet.age %></li><br/>
     <li>Breed - <%= pet.breed %></li><br/>
+    <li>Adoptable? - <%= pet.adoptable %></li><br/>
+    <p>------------------------------------</p>
+  </section>
   <% end %>
-</section>
-<% end %><br/><br/>
+<% end %>
