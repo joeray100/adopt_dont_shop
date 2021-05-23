@@ -34,11 +34,11 @@ RSpec.describe 'Applications Show Page' do
     @application4 = Application.create!(name: "Yattle", address: "1123 Tickle Ct", city: "Minster", state: "CO", zip: 36297, description: "woof", status: 3)
     @application5 = Application.create!(name: "Sarah", address: "92 Ball Dr", city: "Arvada", state: "CO", zip: 36419, description: "I have yarn and squeeky toys", status: 0)
 
-    @application1.pets.push(@pet1, @pet3)
-    @application2.pets.push(@pet2, @pet8, @pet7)
-    @application3.pets.push(@pet4)
-    @application4.pets.push(@pet5)
-    @application5.pets.push(@pet6, @pet9)
+    @application1.pets.push(@pet1, @pet6)
+    @application2.pets.push(@pet2)
+    @application3.pets.push(@pet3)
+    @application4.pets.push(@pet4)
+    @application5.pets.push(@pet5)
 
     visit application_path(@application1)
   end
@@ -63,6 +63,24 @@ RSpec.describe 'Applications Show Page' do
     click_on 'Submit'
 
     expect(current_path).to eq(application_path(@application1))
+    expect(page).to have_content(@pet3.name)
+    expect(page).to have_content(@pet3.age)
+    expect(page).to have_content(@pet3.breed)
+  end
+
+  it "when I click the button to 'Adopt this Pet', I see that pet listed on the app show page" do
+    expect(current_path).to eq(application_path(@application1))
+
+    fill_in 'Search', with: 'myrtle'
+
+    click_on 'Submit'
+    
+    expect(page).to have_button('Adopt this Pet')
+
+    click_on 'Adopt this Pet'
+
+    expect(current_path).to eq(application_path(@application1))
+    expect(page).to_not have_button('Adopt this Pet')
     expect(page).to have_content(@pet3.name)
     expect(page).to have_content(@pet3.age)
     expect(page).to have_content(@pet3.breed)
