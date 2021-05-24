@@ -10,4 +10,8 @@ class Application < ApplicationRecord
   def adopted_pets(pet)
     pets << pet
   end
+
+  def pet_count
+    pets.count
+  end
 end

@@ -50,21 +50,20 @@ RSpec.describe Application, type: :model do
     @application3 = Application.create!(name: "Thadious", address: "6 Pickle St", city: "york", state: "OH", zip: 51631, description: "I have food...sometimes", status: 0)
     @application4 = Application.create!(name: "Yattle", address: "1123 Tickle Ct", city: "Minster", state: "CO", zip: 36297, description: "woof", status: 3)
     @application5 = Application.create!(name: "Sarah", address: "92 Ball Dr", city: "Arvada", state: "CO", zip: 36419, description: "I have yarn and squeeky toys", status: 0)
-
-    @application1.pets.push(@pet1, @pet3)
-    @application2.pets.push(@pet2, @pet8, @pet7)
-    @application3.pets.push(@pet4)
-    @application4.pets.push(@pet5)
-    @application5.pets.push(@pet6, @pet9)
-
   end
 
   describe 'instance methods' do
     describe '#adopted_pets' do
       it "should add a pet or pets to an applicant" do
-        expect(@application3.pets).to eq([@pet4])
+        expect(@application3.adopted_pets(@pet10)).to eq([@pet10])
 
-        expect(@application3.adopted_pets(@pet10)).to eq([@pet4, @pet10])
+        expect(@application3.adopted_pets(@pet10)).to_not eq([@pet4])
+      end
+    end
+
+    describe '#pet_count' do
+      it "should count how many pets an applicant has" do
+        expect(@application3.pet_count).to eq(0)
       end
     end
   end

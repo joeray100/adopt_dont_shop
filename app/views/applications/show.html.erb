@@ -5,13 +5,28 @@
   <li>City - <%= @application.city %></li><br/>
   <li>State - <%= @application.state %></li><br/>
   <li>Zip - <%= @application.zip %></li><br/>
-  <li>Description - <%= @application.description %></li><br/>
   <li>Status - <%= @application.status %></li><br/>
+  <li>Description - <%= @application.description %></li><br/>
 </ul>
 
-<h3>Add a Pet to this Application</h3>
+<% if @application.status == 'Pending' %>
+  <h3><%= @application.name %>'s Pets to Adopt</h3><br/>
+  <% @pets.each do |pet| %>
+    <section>
+      <ul>
+        <li>Name - <%= pet.name %></li><br/>
+        <li>Age - <%= pet.age %></li><br/>
+        <li>Breed - <%= pet.breed %></li><br/>
+        <li>Adoptable? - <%= pet.adoptable %></li><br/>
+      </ul>
+      <p>------------------------------------</p>
+    </section>
+  <% end %>
+<% end %>
+
 <section>
   <% if @application.status == "In Progress" %>
+  <h3>Add a Pet to this Application</h3>
     <%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
       <%= f.label :search %>
       <%= f.text_field :search %>
@@ -29,7 +44,7 @@
     <li>Adoptable? - <%= pet.adoptable %></li><br/>
   </section>
   <% end %>
-<% end %><br/><br/>
+<% end %><br/>
 
 <% if params[:adopt] %>
   <% @adopted_pets.each do |pet| %>
@@ -41,4 +56,19 @@
     <p>------------------------------------</p>
   </section>
   <% end %>
+<% end %><br/>
+
+<% if @application.status != 'Pending' %>
+<% if @application.pet_count > 0 %>
+  <section>
+  <h4>Submit Application</h4>
+    <%= form_with model: @application do |f| %>
+    <h4>Why would you make a good owner for these pet(s)?</h4>
+      <%= f.hidden_field :status, value: 'Pending' %>
+      <%= f.label 'Explain here:' %><br/>
+      <%= f.text_area :reason %>
+      <%= f.submit 'Submit Application' %>
+    <% end %>
+  </section>
 <% end %>
+<% end %><br/><br/>
