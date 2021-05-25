@@ -38,3 +38,6 @@ PetApplication.destroy_all
 @application3 = Application.create!(name: "Thadious", address: "6 Pickle St", city: "york", state: "OH", zip: 51631)
 @application4 = Application.create!(name: "Yattle", address: "1123 Tickle Ct", city: "Minster", state: "CO", zip: 36297)
 @application5 = Application.create!(name: "Sarah", address: "92 Ball Dr", city: "Arvada", state: "CO", zip: 36419)
+
+@application5.pets.push(@pet7)
+@application4.pets.push(@pet8)
