@@ -45,7 +45,7 @@ RSpec.describe Application, type: :model do
     @pet9 = @shelter3.pets.create!(name: "Stewie", breed: "French Bulldog", age: 4)
     @pet10 = @shelter3.pets.create!(name: "Bow", breed: "Boston Terrier", age: 3, adoptable: true)
 
-    @application1 = Application.create!(name: "Sketchy Steve", address: "6107 Dudley Ct", city: "Winchester", state: "NC", zip: 51631, description: "wide open spaces", status: 0)
+    @application1 = Application.create!(name: "Sketchy Steve", address: "6107 Dudley Ct", city: "Winchester", state: "NC", zip: 51631, description: "wide open spaces", status: 1)
     @application2 = Application.create!(name: "Jill", address: "31 Columbus Dr", city: "Denver", state: "CO", zip: 62814, description: "animals LOVE me", status: 1)
     @application3 = Application.create!(name: "Thadious", address: "6 Pickle St", city: "york", state: "OH", zip: 51631, description: "I have food...sometimes", status: 0)
     @application4 = Application.create!(name: "Yattle", address: "1123 Tickle Ct", city: "Minster", state: "CO", zip: 36297, description: "woof", status: 3)
@@ -68,8 +68,11 @@ RSpec.describe Application, type: :model do
     end
   end
 
-  # describe 'class methods' do
-  #   describe '.' do
-  #   end
-  # end
+  describe 'class methods' do
+    describe '.pending_apps' do
+      it "shows apps with a status that is pending" do
+        expect(Application.pending_apps).to eq([@application1, @application2])
+      end
+    end
+  end
 end
