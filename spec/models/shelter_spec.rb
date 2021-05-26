@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Shelter, type: :model do
   describe 'relationships' do
     it { should have_many(:pets) }
+    it { should have_many(:applications).through(:pets) }
   end
 
   describe 'validations' do
@@ -21,6 +22,15 @@ RSpec.describe Shelter, type: :model do
     @pet_2 = @shelter_1.pets.create(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
     @pet_3 = @shelter_3.pets.create(name: 'Lucille Bald', breed: 'sphynx', age: 8, adoptable: true)
     @pet_4 = @shelter_1.pets.create(name: 'Ann', breed: 'ragdoll', age: 5, adoptable: true)
+
+    @application1 = Application.create!(name: "Sketchy Steve", address: "6107 Dudley Ct", city: "Winchester", state: "NC", zip: 51631, status: "Pending")
+    @application2 = Application.create!(name: "Jill", address: "31 Columbus Dr", city: "Denver", state: "CO", zip: 62814, status: "Pending")
+    @application3 = Application.create!(name: "Thadious", address: "6 Pickle St", city: "york", state: "OH", zip: 51631)
+    @application4 = Application.create!(name: "Yattle", address: "1123 Tickle Ct", city: "Minster", state: "CO", zip: 36297)
+    @application5 = Application.create!(name: "Sarah", address: "92 Ball Dr", city: "Arvada", state: "CO", zip: 36419)
+
+    @application1.pets.push(@pet_1)
+    @application2.pets.push(@pet_3)
   end
 
   describe 'class methods' do
@@ -45,6 +55,12 @@ RSpec.describe Shelter, type: :model do
     describe '.reverse_order_by_name' do
       it 'orders the shelters by name in reverse so, descending' do
         expect(Shelter.reverse_order_by_name).to eq([@shelter_2, @shelter_3, @shelter_1])
+      end
+    end
+
+    describe '.shelters_with_pending_apps' do
+      it 'orders the shelters by name in reverse so, descending' do
+        expect(Shelter.shelters_with_pending_apps).to eq([@shelter_1, @shelter_3])
       end
     end
   end
