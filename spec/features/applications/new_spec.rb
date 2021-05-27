@@ -39,10 +39,10 @@ RSpec.describe 'New Application Page' do
   end
 
   it "I get an error message when I try to submit an incompleted form" do
-    expect(page).to_not have_content("ERROR: Missing required information!")
 
     click_on 'Submit'
 
-    expect(page).to have_content("ERROR: Missing required information!")
+    expect(page).to have_content("Application not created: Name can't be blank, Address can't be blank, City can't be blank, Description can't be blank, Zip can't be blank, and Zip is not a number")
+    expect(page).to have_button('Submit')
   end
 end
