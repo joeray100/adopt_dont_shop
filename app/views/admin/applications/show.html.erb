@@ -39,7 +39,7 @@
 <% if @application.status == 'Rejected' %>
   <h2>Your application has been rejected!</h2><br>
   <% @application.pets.each do |pet| %>
-    <section id="pet-approved-<%= pet.id %>">
+    <section id="pet-rejected-<%= pet.id %>">
       <ul>
         <li>Status = <%= @application.status %></li><br>
         <h2>Pet: </h2>

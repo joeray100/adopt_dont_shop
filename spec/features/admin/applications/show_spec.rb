@@ -20,13 +20,16 @@ RSpec.describe 'Admin Applications Show Page' do
     @pet10 = @shelter3.pets.create!(name: "Bow", breed: "Boston Terrier", age: 3, adoptable: true)
 
     @application1 = Application.create!(name: "Sketchy Steve", address: "6107 Dudley Ct", city: "Winchester", state: "NC", zip: 51631, description: "wide open spaces", status: 1)
-    @application2 = Application.create!(name: "Jill", address: "31 Columbus Dr", city: "Denver", state: "CO", zip: 62814, description: "animals LOVE me", status: 1)
-    @application3 = Application.create!(name: "Thadious", address: "6 Pickle St", city: "york", state: "OH", zip: 51631, description: "I have food...sometimes", status: 0)
+    @application2 = Application.create!(name: "Jill", address: "31 Columbus Dr", city: "Denver", state: "CO", zip: 62814, description: "animals LOVE me", status: 0)
+    @application3 = Application.create!(name: "Thadious", address: "6 Pickle St", city: "york", state: "OH", zip: 51631, description: "I have food...sometimes", status: 2)
     @application4 = Application.create!(name: "Yattle", address: "1123 Tickle Ct", city: "Minster", state: "CO", zip: 36297, description: "woof", status: 3)
     @application5 = Application.create!(name: "Sarah", address: "92 Ball Dr", city: "Arvada", state: "CO", zip: 36419, description: "I have yarn and squeeky toys", status: 0)
-
+    # pending apps
     @application1.pets.push(@pet1)
-    @application2.pets.push(@pet2)
+    # approved apps
+    @application3.pets.push(@pet3)
+    # rejected apps
+    @application4.pets.push(@pet4)
 
     visit admin_application_path(@application1)
   end
@@ -37,21 +40,12 @@ RSpec.describe 'Admin Applications Show Page' do
       expect(page).to have_content(@pet1.age)
       expect(page).to have_content(@pet1.breed)
     end
-
-    within "#pet-pending-#{@pet2.id}" do
-      expect(page).to have_content(@pet2.name)
-      expect(page).to have_content(@pet2.age)
-      expect(page).to have_content(@pet2.breed)
-    end
   end
 
   it "I see a button to approve the application next to each pet" do
     within "#pet-pending-#{@pet1.id}" do
       expect(page).to have_button('Approve Application')
-    end
-
-    within "#pet-pending-#{@pet2.id}" do
-      expect(page).to have_button('Approve Application')
+      expect(page).to have_button('Reject Application')
     end
   end
 
@@ -69,6 +63,23 @@ RSpec.describe 'Admin Applications Show Page' do
     within "#pet-approved-#{@pet1.id}" do
       expect(page).to_not have_button('Approve Application')
       expect(page).to have_content('Status = Approved')
+    end
+  end
+
+  it "when I click button to reject pet app, I then see on the same page the button is gone and next to the pet the status is now 'Rejected'." do
+    expect(current_path).to have_content(admin_application_path(@application1))
+
+    within "#pet-pending-#{@pet1.id}" do
+      expect(page).to have_button('Approve Application')
+      expect(page).to have_content('Status = Pending')
+      click_button 'Reject Application'
+    end
+
+    expect(current_path).to have_content(admin_application_path(@application1))
+
+    within "#pet-rejected-#{@pet1.id}" do
+      expect(page).to_not have_button('Reject Application')
+      expect(page).to have_content('Status = Rejected')
     end
   end
 end
