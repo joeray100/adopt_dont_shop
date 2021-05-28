@@ -1,27 +1,43 @@
 <h2>Pets with Pending Applications</h2><br>
 
-<% @pending_apps.each do |app| %>
-<% if app.status == 'Pending' %>
-  <% app.pets.each do |pet| %>
+<% if @application.status == 'Pending' %>
+<% @application.pets.each do |pet| %>
     <section id="pet-pending-<%= pet.id %>">
+      <ul>
+        <li><%= button_to "Approve Application", admin_application_path(@application, status: 'Approved'), method: :patch %></li><br><br>
+        <li><%= button_to "Reject Application", admin_application_path(@application, status: 'Rejected'), method: :patch %></li><br><br>
+        <li>Status = <%= @application.status %></li><br>
+        <h2>Pet: </h2>
           <ul>
-            <li><%= button_to "Approve Application", admin_application_path(@application, status: 'Approved'), method: :patch %></li><br><br>
-            <li>Status = <%= app.status %></li><br>
-            <h2>Pet: </h2>
-              <ul>
-                <li><%= pet.name %></li><br>
-                <li><%= pet.age %></li><br>
-                <li><%= pet.breed %></li><br>
-              </ul>
-            <p>--------------------------</p>
+            <li><%= pet.name %></li><br>
+            <li><%= pet.age %></li><br>
+            <li><%= pet.breed %></li><br>
           </ul>
-      <% end %>
+        <p>--------------------------</p>
+      </ul>
     </section>
   <% end %>
 <% end %><br><br>
 
 <% if @application.status == 'Approved' %>
   <h2>Your application has been approved!</h2><br>
+  <% @application.pets.each do |pet| %>
+    <section id="pet-approved-<%= pet.id %>">
+      <ul>
+        <li>Status = <%= @application.status %></li><br>
+        <h2>Pet: </h2>
+          <ul>
+            <li><%= pet.name %></li><br>
+            <li><%= pet.age %></li><br>
+            <li><%= pet.breed %></li><br>
+        <p>--------------------------</p>
+      </ul>
+    <% end %>
+  </section>
+<% end %><br><br>
+
+<% if @application.status == 'Rejected' %>
+  <h2>Your application has been rejected!</h2><br>
   <% @application.pets.each do |pet| %>
     <section id="pet-approved-<%= pet.id %>">
       <ul>
